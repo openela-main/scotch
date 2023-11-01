@@ -1,0 +1,33 @@
+diff -rupN scotch_6.0.4/src/esmumps/Makefile scotch_6.0.4-new/src/esmumps/Makefile
+--- scotch_6.0.4/src/esmumps/Makefile	2015-03-14 00:32:06.000000000 +0100
++++ scotch_6.0.4-new/src/esmumps/Makefile	2015-03-14 20:53:15.577908208 +0100
+@@ -59,7 +59,7 @@ scotch				:	clean
+ 
+ ptscotch			:	clean
+ 					$(MAKE) CFLAGS="$(CFLAGS) -DSCOTCH_PTSCOTCH" CC="$(CCP)" SCOTCHLIB=ptscotch ESMUMPSLIB=ptesmumps	\
+-					libesmumps$(LIB)											\
++					libptesmumps$(LIB)											\
+ 					main_esmumps$(EXE)
+ 
+ install				:
+@@ -142,7 +142,7 @@ esmumps_strats$(OBJ)		:	esmumps_strats.c
+ 					common.h				\
+ 					esmumps.h
+ 
+-libesmumps$(LIB)		:	graph_graph$(OBJ)			\
++lib$(ESMUMPSLIB)$(LIB)		:	graph_graph$(OBJ)			\
+ 					order$(OBJ)				\
+ 					order_scotch_graph$(OBJ)		\
+ 					dof$(OBJ)				\
+diff -rupN scotch_6.0.4/src/Makefile scotch_6.0.4-new/src/Makefile
+--- scotch_6.0.4/src/Makefile	2014-10-02 17:31:36.000000000 +0200
++++ scotch_6.0.4-new/src/Makefile	2015-03-14 20:52:24.735897296 +0100
+@@ -116,6 +116,8 @@ install				:	required	$(bindir)	$(includ
+ 					-$(CP) -f ../bin/d[agm]*$(EXE) $(bindir)
+ 					-$(CP) -f ../include/*scotch*.h $(includedir)
+ 					-$(CP) -f ../lib/*scotch*$(LIB) $(libdir)
++					-$(CP) -f ../include/*esmumps*.h $(includedir)
++					-$(CP) -f ../lib/*esmumps*$(LIB) $(libdir)
+ 					-$(CP) -Rf ../man/* $(mandir)
+ 
+ clean				:	required

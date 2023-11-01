@@ -1,0 +1,68 @@
+diff -urNp a/src/esmumps/Makefile b/src/esmumps/Makefile
+--- a/src/esmumps/Makefile	2021-01-12 19:47:38.599350265 +0100
++++ b/src/esmumps/Makefile	2021-01-12 19:52:21.913874810 +0100
+@@ -151,7 +151,7 @@ lib$(ESMUMPSLIB)$(LIB)		:	graph_graph$(O
+ 					esmumps$(OBJ)				\
+ 					esmumps_f$(OBJ)				\
+ 					esmumps_strats$(OBJ)
+-					$(AR) $(ARFLAGS) lib$(ESMUMPSLIB)$(LIB) $(?)
++					$(AR) $(ARFLAGS) lib$(ESMUMPSLIB)$(LIB) $(?) $(LDFLAGS)
+ 					-$(RANLIB) lib$(ESMUMPSLIB)$(LIB)
+ 
+ main_esmumps$(EXE)		:	main_esmumps.c				\
+diff -urNp a/src/libscotch/Makefile b/src/libscotch/Makefile
+--- a/src/libscotch/Makefile	2021-01-12 19:47:38.602350292 +0100
++++ b/src/libscotch/Makefile	2021-01-12 19:56:35.901101614 +0100
+@@ -2962,26 +2962,26 @@ ptscotchf.h			:	ptdummysizes$(EXE)			\
+ 					library_pt_f.h
+ 					./ptdummysizes$(EXE) library_pt_f.h ptscotchf.h
+ 
+-libscotch$(LIB)			:	$(LIBSCOTCHDEPS)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++libscotch$(LIB)			:	$(LIBSCOTCHDEPS) libscotcherr$(LIB)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS) -L . -lscotcherr
+ 					-$(RANLIB) $(@)
+ 
+ libscotcherr$(LIB)		:	library_error$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS)
+ 					-$(RANLIB) $(@)
+ 
+ libscotcherrexit$(LIB)		:	library_error_exit$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS)
+ 					-$(RANLIB) $(@)
+ 
+-libptscotch$(LIB)		:	$(LIBPTSCOTCHDEPS)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++libptscotch$(LIB)		:	$(LIBPTSCOTCHDEPS) libscotch$(LIB)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS)
+ 					-$(RANLIB) $(@)
+ 
+ libptscotcherr$(LIB)		:	library_error_pt$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS)
+ 					-$(RANLIB) $(@)
+ 
+ libptscotcherrexit$(LIB)	:	library_error_exit_pt$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(?)
++					$(AR) $(ARFLAGS) $(@) $(?) $(LDFLAGS)
+ 					-$(RANLIB) $(@)
+diff -urNp a/src/libscotchmetis/Makefile b/src/libscotchmetis/Makefile
+--- a/src/libscotchmetis/Makefile	2021-01-12 19:47:38.599350265 +0100
++++ b/src/libscotchmetis/Makefile	2021-01-12 19:58:40.718189527 +0100
+@@ -129,12 +129,12 @@ libptscotchparmetis$(LIB)	:	parmetis_dgr
+ 					parmetis_dgraph_order_f$(OBJ)		\
+ 					parmetis_dgraph_part$(OBJ)		\
+ 					parmetis_dgraph_part_f$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(^)
++					$(AR) $(ARFLAGS) $(@) $(^) $(LDFLAGS) -L ../libscotch -lptscotch
+ 					-$(RANLIB) $(@)
+ 
+ libscotchmetis$(LIB)		:	metis_graph_order$(OBJ)			\
+ 					metis_graph_order_f$(OBJ)		\
+ 					metis_graph_part$(OBJ)			\
+ 					metis_graph_part_f$(OBJ)
+-					$(AR) $(ARFLAGS) $(@) $(^)
++					$(AR) $(ARFLAGS) $(@) $(^) $(LDFLAGS) -L ../libscotch -lscotch
+ 					-$(RANLIB) $(@)
